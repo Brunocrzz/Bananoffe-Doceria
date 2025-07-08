@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
 import axios from 'axios';
-import { toaster } from '@/components/ui/toaster';
-import { ResetPasswordDto } from '@/types/User.type';
+import { toaster } from '../components/ui/toaster';
+import { ResetPasswordDto } from '../types/User.type';
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 

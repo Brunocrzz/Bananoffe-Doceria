@@ -1,10 +1,10 @@
 "use client";
 import { useCallback, useState } from "react";
 import axios from "axios";
-import { toaster } from "@/components/ui/toaster";
-import { Sacola } from "@/types/Sacola.type";
+import { toaster } from "../components/ui/toaster";
+import { Sacola } from "../types/Sacola.type";
 import { useSession } from "next-auth/react";
-import { FormValues } from "@/components/ProdutoModal";
+import { FormValues } from "../components/ProdutoModal";
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 

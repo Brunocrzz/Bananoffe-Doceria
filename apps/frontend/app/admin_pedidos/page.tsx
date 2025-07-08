@@ -13,11 +13,11 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import MenuBar from "@/components/MenuBar";
-import { usePedidos } from "@/hooks/usePedidos";
+import MenuBar from "../../components/MenuBar";
+import { usePedidos } from "../../hooks/usePedidos";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Pedido } from "@/types/Pedido.type";
+import { Pedido } from "../../types/Pedido.type";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { FaFileCircleCheck } from "react-icons/fa6";

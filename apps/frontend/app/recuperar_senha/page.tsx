@@ -15,8 +15,8 @@ import {
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { toaster } from "@/components/ui/toaster";
-import { useResetPassword } from "@/hooks/useResetPassword";
+import { toaster } from "../../components/ui/toaster";
+import { useResetPassword } from "../../hooks/useResetPassword";
 
 interface FormValues {
   email: string;

@@ -1,4 +1,4 @@
-import { FormValues } from "@/app/admin_cardapio/page";
+import { FormValues } from "../app/admin_cardapio/page";
 import {
     Dialog,
     Portal,
@@ -11,7 +11,7 @@ import {
     Flex,
 } from "@chakra-ui/react";
 import { UseFormReturn, FieldErrors } from "react-hook-form";
-import { Fatia, Torta } from "@/types/Product.type";
+import { Fatia, Torta } from "../types/Product.type";
 import { useEffect } from "react";
 
 type ProdutoDialogProps = {

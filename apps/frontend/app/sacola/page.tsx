@@ -21,17 +21,17 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import Header from "@/components/Header";
-import NavBar from "@/components/NavBar";
-import { ItensSacola } from "@/types/Sacola.type";
-import { useSacola } from "@/hooks/useSacola";
+import Header from "../../components/Header";
+import NavBar from "../../components/NavBar";
+import { ItensSacola } from "../../types/Sacola.type";
+import { useSacola } from "../../hooks/useSacola";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useProducts } from "@/hooks/useProducts";
-import { Fatia, Torta } from "@/types/Product.type";
+import { useProducts } from "../../hooks/useProducts";
+import { Fatia, Torta } from "../../types/Product.type";
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { usePedidos } from "@/hooks/usePedidos";
+import { usePedidos } from "../../hooks/usePedidos";
 
 export default function Sacola() {
     const { getSacola, isLoading, setIsLoading, sacola, setSacola, atualizarItemSacola, excluirItemSacola } = useSacola();

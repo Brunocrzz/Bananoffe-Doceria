@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Center, Container, Flex, Heading, Image, QrCode, Stack, Text } from '@chakra-ui/react';
 import Link from 'next/link';
-import NavBar from '@/components/NavBar';
-import { useConfiguracoes } from '@/hooks/useConfiguracoes';
-import { Pedido } from '@/types/Pedido.type';
+import NavBar from './NavBar';
+import { useConfiguracoes } from '../hooks/useConfiguracoes';
+import { Pedido } from '../types/Pedido.type';
 import { toaster } from './ui/toaster';
 
 interface PagamentoQrCodeProps {

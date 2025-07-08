@@ -13,14 +13,14 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-import { useProducts } from "@/hooks/useProducts";
+import { useProducts } from "../../hooks/useProducts";
 import { useEffect, useState } from "react";
 import { MdAdd, MdDelete, MdEdit, MdSearch } from "react-icons/md";
-import { Fatia, Torta } from "@/types/Product.type";
+import { Fatia, Torta } from "../../types/Product.type";
 import { useForm } from "react-hook-form";
-import { ProdutoDialog } from "@/components/ProdutoDialog";
+import { ProdutoDialog } from "../../components/ProdutoDialog";
 import Link from "next/link";
-import MenuBar from "@/components/MenuBar";
+import MenuBar from "../../components/MenuBar";
 
 export interface FormValues {
   _id: string;

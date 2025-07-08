@@ -9,7 +9,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 

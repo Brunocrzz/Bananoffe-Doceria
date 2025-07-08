@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Pedido } from '@/types/Pedido.type';
+import { Pedido } from '../types/Pedido.type';
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 

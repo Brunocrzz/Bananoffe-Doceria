@@ -1,8 +1,8 @@
 'use client';
 import { useCallback, useState } from 'react';
 import axios from 'axios';
-import { toaster } from '@/components/ui/toaster';
-import { CreateUserDto, UpdateUserDto, User } from '@/types/User.type';
+import { toaster } from '../components/ui/toaster';
+import { CreateUserDto, UpdateUserDto, User } from '../types/User.type';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 

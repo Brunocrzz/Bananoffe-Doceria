@@ -1,9 +1,9 @@
 "use client";
 import { useCallback, useState } from "react";
 import axios from "axios";
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from "../components/ui/toaster";
 import { useSession } from "next-auth/react";
-import { Pedido } from "@/types/Pedido.type";
+import { Pedido } from "../types/Pedido.type";
 import { useRouter } from 'next/navigation';
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";

@@ -13,13 +13,13 @@ import {
     IconButton,
     NumberInput,
 } from "@chakra-ui/react";
-import { Fatia, Torta } from "@/types/Product.type";
+import { Fatia, Torta } from "../types/Product.type";
 import { FiShoppingBag } from "react-icons/fi";
 import { LuMinus, LuPlus } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useProducts } from "@/hooks/useProducts";
-import { useSacola } from "@/hooks/useSacola";
+import { useProducts } from "../hooks/useProducts";
+import { useSacola } from "../hooks/useSacola";
 
 export interface FormValues {
     produtoId: string

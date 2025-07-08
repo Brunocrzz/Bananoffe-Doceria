@@ -17,13 +17,13 @@ import {
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { useUsers } from "@/hooks/useUsers";
+import { useUsers } from "../../hooks/useUsers";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/context/AuthContext";
-import { User } from "@/types/User.type";
-import NavBar from "@/components/NavBar";
+import { useAuth } from "../../context/AuthContext";
+import { User } from "../../types/User.type";
+import NavBar from "../../components/NavBar";
 import { useSession } from "next-auth/react";
 
 export default function MinhaConta() {

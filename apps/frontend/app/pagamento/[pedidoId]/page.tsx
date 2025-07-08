@@ -1,7 +1,7 @@
-import PagamentoQrCode from '@/components/PagamentoQrCode';
-import { buscarPedidoPorId } from '@/hooks/buscarPedidoPorId';
+import PagamentoQrCode from '../../../components/PagamentoQrCode';
+import { buscarPedidoPorId } from '../../../hooks/buscarPedidoPorId';
 import { redirect } from "next/navigation";
-import { getServerAuthSession } from "@/lib/auth";
+import { getServerAuthSession } from "../../../lib/auth";
 
 export default async function PagamentoPage({ params }: { params: Promise<{ pedidoId: string }> }) {
     const resolvedParams = await params;

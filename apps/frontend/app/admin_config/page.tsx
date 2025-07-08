@@ -17,13 +17,13 @@ import {
 
 import { useState } from "react";
 import Link from "next/link";
-import MenuBar from "@/components/MenuBar";
+import MenuBar from "../../components/MenuBar";
 import { CiEdit } from "react-icons/ci";
-import { useConfiguracoes } from "@/hooks/useConfiguracoes";
+import { useConfiguracoes } from "../../hooks/useConfiguracoes";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from "../../components/ui/toaster";
 
 function AdminConfig() {
     const isMobile = useBreakpointValue({ base: true, md: false });

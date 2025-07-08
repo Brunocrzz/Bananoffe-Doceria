@@ -3,8 +3,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { toaster } from '@/components/ui/toaster';
-import { User } from '@/types/User.type';
+import { toaster } from '../components/ui/toaster';
+import { User } from '../types/User.type';
 
 interface AuthContextType {
   user: User | null;

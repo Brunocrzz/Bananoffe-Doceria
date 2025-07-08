@@ -14,7 +14,7 @@ import {
   Center,
   Link,
 } from "@chakra-ui/react";
-import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordInput } from "../../components/ui/password-input";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/AuthContext";
 

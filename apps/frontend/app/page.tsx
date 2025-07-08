@@ -13,11 +13,11 @@ import {
 } from "@chakra-ui/react";
 import { MdSearch } from "react-icons/md";
 import { useState, useEffect } from "react";
-import NavBar from "@/components/NavBar";
-import { useProducts } from "@/hooks/useProducts";
-import Header from "@/components/Header";
-import { Fatia, Torta } from "@/types/Product.type";
-import ProductModal from "@/components/ProdutoModal";
+import NavBar from "../components/NavBar";
+import { useProducts } from "../hooks/useProducts";
+import Header from "../components/Header";
+import { Fatia, Torta } from "../types/Product.type";
+import ProductModal from "../components/ProdutoModal";
 import { useSession } from "next-auth/react";
 
 function Home() {

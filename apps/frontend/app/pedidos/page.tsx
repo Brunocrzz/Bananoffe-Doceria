@@ -1,15 +1,15 @@
 "use client"
 
-import Header from "@/components/Header";
-import NavBar from "@/components/NavBar";
-import { usePedidos } from "@/hooks/usePedidos";
+import Header from "../../components/Header";
+import NavBar from "../../components/NavBar";
+import { usePedidos } from "../../hooks/usePedidos";
 import { Box, Button, Center, Dialog, DialogBody, DialogHeader, DialogTitle, Flex, Image, Portal, Separator, Spinner, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Pedido } from "@/types/Pedido.type";
-import { Fatia, Torta } from "@/types/Product.type";
-import { useProducts } from "@/hooks/useProducts";
+import { Pedido } from "../../types/Pedido.type";
+import { Fatia, Torta } from "../../types/Product.type";
+import { useProducts } from "../../hooks/useProducts";
 import { IoMdClose } from "react-icons/io";
 import Link from "next/link";
 

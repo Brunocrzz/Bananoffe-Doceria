@@ -13,10 +13,10 @@ import {
   Center,
   Link,
 } from "@chakra-ui/react";
-import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordInput } from "../../components/ui/password-input";
 import { useForm } from "react-hook-form";
 import React from "react";
-import { useUsers } from "@/hooks/useUsers";
+import { useUsers } from "../../hooks/useUsers";
 import { useHookFormMask } from "use-mask-input"
 import { useRouter } from "next/navigation";
 

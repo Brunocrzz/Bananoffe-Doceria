@@ -1,8 +1,8 @@
 "use client";
 import { useCallback, useState } from "react";
 import axios from "axios";
-import { toaster } from "@/components/ui/toaster";
-import { Fatia, Product, Torta } from "@/types/Product.type";
+import { toaster } from "../components/ui/toaster";
+import { Fatia, Product, Torta } from "../types/Product.type";
 import { useSession } from "next-auth/react";
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";

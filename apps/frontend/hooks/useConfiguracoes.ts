@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { toaster } from "@/components/ui/toaster";
+import { toaster } from "../components/ui/toaster";
 import { useState } from "react";
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
