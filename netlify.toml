@@ -3,5 +3,8 @@
   command = "npm install && npm run build"
   publish = "apps/frontend/.next"
 
+[build.environment]
+  NODE_VERSION = "20.17.0"
+
 [[plugins]]
-  package = "@netlify/plugin-nextjs"
+package = "@netlify/plugin-nextjs"
