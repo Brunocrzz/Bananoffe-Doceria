@@ -19,6 +19,7 @@ import React from "react";
 import { useUsers } from "../../hooks/useUsers";
 import { useHookFormMask } from "use-mask-input"
 import { useRouter } from "next/navigation";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 interface FormValues {
   nome: string;
@@ -53,13 +54,12 @@ function Cadastro() {
     const sucesso = await createUser(dados);
 
     if (sucesso) {
-      router.push('/login'); 
+      router.push('/login');
     }
   };
 
-
   return (
-    <Box height="100vh">
+    <Box minHeight="100vh" backgroundColor="#F1DD2F">
       <Flex height="100%">
         <Box flex="0.5" position="relative" hideBelow={'md'}>
           <Image
@@ -76,7 +76,7 @@ function Cadastro() {
             gap="5px"
             alignItems="center"
             justifyItems="center"
-            padding="60px 30px 30px 30px"
+            padding="60px 30px 0px 30px"
           >
             <Text textStyle="3xl" fontWeight="semibold" color="black">
               Criar Nova Conta
@@ -89,6 +89,16 @@ function Cadastro() {
                 Login
               </Link>
             </Text>
+            <Link href="/">
+              <Button
+                variant="ghost"
+                color="#895023"
+                size="md"
+                _hover={{ bg: "transparent", textDecoration: "underline" }}
+              >
+                Voltar
+              </Button>
+            </Link>
           </Stack>
 
           <Separator size="md" />
@@ -107,8 +117,36 @@ function Cadastro() {
                       color="black"
                       size="lg"
                       type="text"
-                      placeholder="Primeiro Nome"
-                      {...register("nome", { required: "Nome é obrigatório" })}
+                      placeholder="Nome e Sobrenome"
+                      {...register("nome", {
+                        required: "Nome é obrigatório",
+                        minLength: {
+                          value: 3,
+                          message: "Nome deve ter pelo menos 3 letras",
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: "Nome muito longo",
+                        },
+                        validate: {
+                          apenasLetras: (value) => {
+                            const regex = /^(?!.* {2})[A-Za-zÀ-ÿ]+(?: [A-Za-zÀ-ÿ]+)*(?: )?$/;
+                            return regex.test(value) || "Use apenas letras e espaços simples";
+                          },
+                          muitasRepeticoes: (value) => {
+                            const texto = value.trim().replace(/\s/g, "").toLowerCase();
+                            const counts = [...texto].reduce((acc, letra) => {
+                              acc[letra] = (acc[letra] || 0) + 1;
+                              return acc;
+                            }, {} as Record<string, number>);
+                            return Object.values(counts).some((qtd) => qtd > 5)
+                              ? "Evite repetições excessivas"
+                              : true;
+                          },
+                          tamanho: (value) =>
+                            value.trim().length <= 50 || "Nome muito longo (máx. 50 caracteres)",
+                        }
+                      })}
                     />
                     <Field.ErrorText>{errors.nome?.message}</Field.ErrorText>
                   </Field.Root>
@@ -150,6 +188,34 @@ function Cadastro() {
                           message: "Senha deve ter pelo menos 6 caracteres",
                         },
                       })}
+                      visibilityIcon={{
+                        on: (
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            h="100%"
+                            px={2}
+                            color="black"
+                            _hover={{ bg: "#D9D9D9" }}
+                          >
+                            <ViewOffIcon />
+                          </Box>
+                        ),
+                        off: (
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            h="100%"
+                            px={2}
+                            color="black"
+                            _hover={{ bg: "#D9D9D9" }}
+                          >
+                            <ViewIcon />
+                          </Box>
+                        ),
+                      }}
                     />
                     <Field.ErrorText>{errors.senha?.message}</Field.ErrorText>
                   </Field.Root>
@@ -163,8 +229,12 @@ function Cadastro() {
                       size="lg"
                       type="tel"
                       placeholder="(99)99999-9999"
-                      {...registerWithMask("telefone", '(99)99999-9999', {
-                        required: true
+                      {...registerWithMask("telefone", "(99)99999-9999", {
+                        required: "Telefone é obrigatório",
+                        pattern: {
+                          value: /^\(\d{2}\)\d{5}-\d{4}$/,
+                          message: "Formato inválido",
+                        },
                       })}
                     />
                     <Field.ErrorText>{errors.telefone?.message}</Field.ErrorText>
@@ -180,7 +250,21 @@ function Cadastro() {
                       color="black"
                       size="lg"
                       type="date"
-                      {...register("dataNascimento")}
+                      {...register("dataNascimento", {
+                        validate: (value) => {
+                          if (!value) return true; // opcional
+                          const hoje = new Date();
+                          const data = new Date(value);
+                          const idadeMinima = 13;
+                          const limite = new Date();
+                          limite.setFullYear(limite.getFullYear() - idadeMinima);
+
+                          if (data > hoje) return "Data no futuro não é válida";
+                          if (data > limite) return `É necessário ter pelo menos ${idadeMinima} anos`;
+
+                          return true;
+                        },
+                      })}
                     />
                     <Field.ErrorText>{errors.dataNascimento?.message}</Field.ErrorText>
                   </Field.Root>

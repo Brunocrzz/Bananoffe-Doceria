@@ -97,7 +97,7 @@ export default function Pedidos() {
                             <Text fontSize="lg" color={"black"}>Você ainda não realizou nenhum pedido</Text>
                             <Link href="/sacola" color="#895023">
                                 <Text font={"bold"} color="#895023">
-                                    Conclue seu pedido aqui
+                                    Conclua seu pedido aqui
                                 </Text>
                             </Link>
                         </VStack>

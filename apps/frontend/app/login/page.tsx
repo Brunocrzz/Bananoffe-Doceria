@@ -17,6 +17,7 @@ import {
 import { PasswordInput } from "../../components/ui/password-input";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../context/AuthContext";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 interface FormValues {
   email: string;
@@ -40,7 +41,7 @@ function Login() {
   };
 
   return (
-    <Box height="100vh">
+    <Box minHeight="100vh" backgroundColor="#F1DD2F">
       <Flex height="100%">
         <Box flex="0.5" position="relative" hideBelow="md">
           <Image
@@ -56,7 +57,7 @@ function Login() {
             gap="5px"
             alignItems="center"
             justifyItems="center"
-            padding="60px 30px 30px 30px"
+            padding="60px 30px 0px 30px"
           >
             <Text textStyle="3xl" fontWeight="semibold" color="black">
               Login
@@ -64,6 +65,16 @@ function Login() {
             <Text textStyle="lg" color="black">
               Entre para continuar
             </Text>
+            <Link href="/">
+              <Button
+                variant="ghost"
+                color="#895023"
+                size="md"
+                _hover={{ bg: "transparent", textDecoration: "underline" }}
+              >
+                Voltar
+              </Button>
+            </Link>
           </Stack>
           <Separator size="md" />
           <Container padding="30px" width="80%">
@@ -101,10 +112,38 @@ function Login() {
                       {...register("password", {
                         required: "Senha é obrigatória",
                         minLength: {
-                          value: 5,
-                          message: "Senha deve ter pelo menos 5 caracteres",
+                          value: 6,
+                          message: "Senha deve ter pelo menos 6 caracteres",
                         },
                       })}
+                      visibilityIcon={{
+                        on: (
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            h="100%"
+                            px={2}
+                            color="black"
+                            _hover={{ bg: "#D9D9D9" }}
+                          >
+                            <ViewOffIcon />
+                          </Box>
+                        ),
+                        off: (
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            h="100%"
+                            px={2}
+                            color="black"
+                            _hover={{ bg: "#D9D9D9" }}
+                          >
+                            <ViewIcon />
+                          </Box>
+                        ),
+                      }}
                     />
                     <Field.ErrorText>{errors.password?.message}</Field.ErrorText>
                   </Field.Root>

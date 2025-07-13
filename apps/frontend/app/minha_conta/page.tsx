@@ -14,6 +14,8 @@ import {
   Dialog,
   Portal,
   Field,
+  Center,
+  Spinner,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -37,7 +39,7 @@ export default function MinhaConta() {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const { data: session, status } = useSession();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [nome, setNome] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
 
@@ -45,12 +47,19 @@ export default function MinhaConta() {
     if (session === undefined || !user) return;
 
     const fetchUsuario = async () => {
-      const userData = await getUser(user.id);
-      if (userData !== null) {
-        setNome(userData.nome || "");
-        setTelefoneFormatado(userData.telefone || "");
-        setDataNascimento(userData.dataNascimento?.split("T")[0] || "");
+      try {
+        const userData = await getUser(user.id);
+        if (userData !== null) {
+          setNome(userData.nome || "");
+          setTelefoneFormatado(userData.telefone || "");
+          setDataNascimento(userData.dataNascimento?.split("T")[0] || "");
+        }
+      } catch (err) {
+        console.error("Erro ao buscar usuário", err);
+      } finally {
+        setIsLoading(false);
       }
+
     };
 
     fetchUsuario();
@@ -138,152 +147,159 @@ export default function MinhaConta() {
             <Text color="gray.600">Atualize seus dados</Text>
           </Stack>
 
-          <Stack gap={5}>
-            <FormControl>
-              <FormLabel color="black">Nome</FormLabel>
-              <Input
-                bg="#D9D9D9"
-                color="black"
-                size="lg"
-                defaultValue={nome}
-                onChange={handleInputChange("nome")}
-              />
-            </FormControl>
-
-            <FormControl>
-              <FormLabel color="black">Telefone</FormLabel>
-              <Input
-                bg="#D9D9D9"
-                color="black"
-                size="lg"
-                value={formatPhoneVisual(telefoneFormatado)}
-                placeholder="(XX) XXXXX-XXXX"
-
-                onChange={(e) => {
-                  const raw = e.target.value.replace(/\D/g, "");
-                  setTelefoneFormatado(raw);
-                  setChangedFields((prev) => ({ ...prev, telefone: raw }));
-                }}
-              />
-            </FormControl>
-
-            <FormControl>
-              <FormLabel color="black">Data de Nascimento</FormLabel>
-              <Input
-                type="date"
-                bg="#D9D9D9"
-                color="black"
-                size="lg"
-                defaultValue={dataNascimento}
-                onChange={handleInputChange("dataNascimento")}
-              />
-            </FormControl>
-
-            <FormControl>
-              <FormLabel color="black">Nova Senha</FormLabel>
-              <InputGroup
-                endElement={
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setMostrarSenha(!mostrarSenha)}
-                    _hover={{ bg: "transparent" }}
-                  >
-                    {mostrarSenha ? <ViewOffIcon /> : <ViewIcon />}
-                  </Button>
-                }
-              >
+          <> {isLoading===true ? (
+            <Center py={10}>
+              <Spinner size="lg" color="#895023" />
+            </Center>
+          ) : (
+            <Stack gap={5}>
+              <FormControl>
+                <FormLabel color="black">Nome</FormLabel>
                 <Input
-                  type={mostrarSenha ? "text" : "password"}
                   bg="#D9D9D9"
                   color="black"
                   size="lg"
-                  placeholder="Deixe em branco para manter a atual"
-                  onChange={handleInputChange("senha")}
+                  value={nome}
+                  onChange={handleInputChange("nome")}
                 />
-              </InputGroup>
-            </FormControl>
+              </FormControl>
 
-
-            <Button
-              bgColor="#895023"
-              color="white"
-              size="lg"
-              _hover={{ bgColor: "#6a3d1a" }}
-              loading={isLoading}
-              loadingText="Salvando..."
-              disabled={Object.keys(changedFields).length === 0}
-              onClick={handleSubmit}
-            >
-              Salvar Alterações
-            </Button>
-            <Button
-              bgColor="#895023"
-              color="white"
-              size="lg"
-              _hover={{ bgColor: "#6a3d1a" }}
-              loading={isLoading}
-              loadingText="Salvando..."
-              onClick={handleLogout}
-            >
-              Sair
-            </Button>
-            <Dialog.Root>
-              <Dialog.Trigger asChild>
-                <Button
-                  bgColor="red.700"
-                  color="white"
+              <FormControl>
+                <FormLabel color="black">Telefone</FormLabel>
+                <Input
+                  bg="#D9D9D9"
+                  color="black"
                   size="lg"
-                  _hover={{ bgColor: "red.900" }}
-                  loading={isLoading}
-                  loadingText="Carregando..."
+                  value={formatPhoneVisual(telefoneFormatado)}
+                  placeholder="(XX) XXXXX-XXXX"
+
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/\D/g, "");
+                    setTelefoneFormatado(raw);
+                    setChangedFields((prev) => ({ ...prev, telefone: raw }));
+                  }}
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel color="black">Data de Nascimento</FormLabel>
+                <Input
+                  type="date"
+                  bg="#D9D9D9"
+                  color="black"
+                  size="lg"
+                  value={dataNascimento}
+                  onChange={handleInputChange("dataNascimento")}
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel color="black">Nova Senha</FormLabel>
+                <InputGroup
+                  endElement={
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setMostrarSenha(!mostrarSenha)}
+                      _hover={{ bg: "transparent" }}
+                    >
+                      {mostrarSenha ? <ViewOffIcon /> : <ViewIcon />}
+                    </Button>
+                  }
                 >
-                  Apagar Conta
-                </Button>
-              </Dialog.Trigger>
-              <Portal>
-                <Dialog.Backdrop />
-                <Dialog.Positioner>
-                  <Dialog.Content>
-                    <Dialog.Header>
-                      <Dialog.Title>Excluir Conta</Dialog.Title>
-                    </Dialog.Header>
-                    <Dialog.Body pb="4">
-                      <Stack gap="4">
-                        <Field.Root>
-                          <Field.Label>Digite sua Senha para continuar</Field.Label>
-                          <Input
-                            type="password"
-                            placeholder="Digite sua senha"
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
-                          />
-                          {erro && (
-                            <Text color={"red.100"}>Senha Incorreta</Text>
-                          )}
-                        </Field.Root>
-                      </Stack>
-                    </Dialog.Body>
-                    <Dialog.Footer>
-                      <Dialog.ActionTrigger asChild>
-                        <Button variant="outline">Cancelar</Button>
-                      </Dialog.ActionTrigger>
-                      <Button
-                        bg={"red.200"}
-                        _hover={{ bgColor: "red.400" }}
-                        onClick={handleDeleteAccount}
-                        loading={isLoading}
-                        loadingText="Excluindo..."
-                        disabled={!senha || senha.length < 6}
-                      >
-                        Excluir Conta
-                      </Button>
-                    </Dialog.Footer>
-                  </Dialog.Content>
-                </Dialog.Positioner>
-              </Portal>
-            </Dialog.Root>
-          </Stack>
+                  <Input
+                    type={mostrarSenha ? "text" : "password"}
+                    bg="#D9D9D9"
+                    color="black"
+                    size="lg"
+                    placeholder="Deixe em branco para manter a atual"
+                    onChange={handleInputChange("senha")}
+                  />
+                </InputGroup>
+              </FormControl>
+
+
+              <Button
+                bgColor="#895023"
+                color="white"
+                size="lg"
+                _hover={{ bgColor: "#6a3d1a" }}
+                loading={isLoading}
+                loadingText="Salvando..."
+                disabled={Object.keys(changedFields).length === 0}
+                onClick={handleSubmit}
+              >
+                Salvar Alterações
+              </Button>
+              <Button
+                bgColor="#895023"
+                color="white"
+                size="lg"
+                _hover={{ bgColor: "#6a3d1a" }}
+                loading={isLoading}
+                loadingText="Salvando..."
+                onClick={handleLogout}
+              >
+                Sair
+              </Button>
+              <Dialog.Root>
+                <Dialog.Trigger asChild>
+                  <Button
+                    bgColor="red.700"
+                    color="white"
+                    size="lg"
+                    _hover={{ bgColor: "red.900" }}
+                    loading={isLoading}
+                    loadingText="Carregando..."
+                  >
+                    Apagar Conta
+                  </Button>
+                </Dialog.Trigger>
+                <Portal>
+                  <Dialog.Backdrop />
+                  <Dialog.Positioner>
+                    <Dialog.Content>
+                      <Dialog.Header>
+                        <Dialog.Title>Excluir Conta</Dialog.Title>
+                      </Dialog.Header>
+                      <Dialog.Body pb="4">
+                        <Stack gap="4">
+                          <Field.Root>
+                            <Field.Label>Digite sua Senha para continuar</Field.Label>
+                            <Input
+                              type="password"
+                              placeholder="Digite sua senha"
+                              value={senha}
+                              onChange={(e) => setSenha(e.target.value)}
+                            />
+                            {erro && (
+                              <Text color={"red.100"}>Senha Incorreta</Text>
+                            )}
+                          </Field.Root>
+                        </Stack>
+                      </Dialog.Body>
+                      <Dialog.Footer>
+                        <Dialog.ActionTrigger asChild>
+                          <Button variant="outline">Cancelar</Button>
+                        </Dialog.ActionTrigger>
+                        <Button
+                          bg={"red.200"}
+                          _hover={{ bgColor: "red.400" }}
+                          onClick={handleDeleteAccount}
+                          loading={isLoading}
+                          loadingText="Excluindo..."
+                          disabled={!senha || senha.length < 6}
+                        >
+                          Excluir Conta
+                        </Button>
+                      </Dialog.Footer>
+                    </Dialog.Content>
+                  </Dialog.Positioner>
+                </Portal>
+              </Dialog.Root>
+            </Stack>
+          )}
+          </>
         </Stack>
       </Container>
       <NavBar />
