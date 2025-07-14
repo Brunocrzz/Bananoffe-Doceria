@@ -37,6 +37,7 @@ function AdminConfig() {
     const [pixCode, setPixCode] = useState("");
     const { data: session } = useSession();
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (session === undefined) {
@@ -122,6 +123,7 @@ function AdminConfig() {
 
     async function gerar() {
         try {
+            setIsLoading(true);
             const code = await gerarPixQrCode(0.01);
             if (code) setPixCode(code.pixCode);
         } catch (error) {
@@ -131,6 +133,8 @@ function AdminConfig() {
                 description: "Por favor, tente mais tarde",
                 type: "error"
             })
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -287,6 +291,9 @@ function AdminConfig() {
                         marginRight={isMobile ? "0" : "2"}
                         mt={5}
                         onClick={() => (gerar())}
+                        loading={isLoading}
+                        loadingText="Gerando..."
+                        _hover={{ bgColor: "#6a3d1a" }}
                     >
                         Testar Qr Code
                     </Button>
