@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import { Box, Button, Center, Container, Flex, Heading, Image, QrCode, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Container, Flex, Heading, Image, QrCode, Spinner, Stack, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import NavBar from './NavBar';
 import { useConfiguracoes } from '../hooks/useConfiguracoes';
@@ -15,10 +15,12 @@ interface PagamentoQrCodeProps {
 export default function PagamentoQrCode({ pedido }: PagamentoQrCodeProps) {
     const [pixCode, setPixCode] = useState('');
     const { gerarPixQrCode } = useConfiguracoes();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         async function gerar() {
             try {
+                setIsLoading(true);
                 const code = await gerarPixQrCode(pedido.valorTotal);
                 if (code) setPixCode(code.pixCode);
             } catch (error) {
@@ -28,6 +30,8 @@ export default function PagamentoQrCode({ pedido }: PagamentoQrCodeProps) {
                     description: "Por favor, tente mais tarde",
                     type: "error"
                 })
+            } finally {
+                setIsLoading(false);
             }
         }
 
@@ -60,43 +64,51 @@ export default function PagamentoQrCode({ pedido }: PagamentoQrCodeProps) {
                             Valor: R${pedido.valorTotal}
                         </Text>
 
-                        {pixCode !== '' && (
-                            <Box rounded="md" bgColor={'black'} p={5}>
-                                <Center>
-                                    <QrCode.Root value={pixCode} size={"2xl"}>
-                                        <QrCode.Frame>
-                                            <QrCode.Pattern />
-                                        </QrCode.Frame>
-                                    </QrCode.Root>
+                        {isLoading ? (
+                            <Stack>
+                                <Center mt={20}>
+                                    <Spinner size="xl" color="#895023" />
                                 </Center>
-                                <Text mt={2} wordBreak="break-all">
-                                    <Text as="span" color="#895023" fontWeight="bold">
-                                        Chave:{' '}
+                            </Stack>
+                        ) : (
+                            pixCode !== '' && (
+                                <Box rounded="md" bgColor={'black'} p={5}>
+                                    <Center>
+                                        <QrCode.Root value={pixCode} size={"2xl"}>
+                                            <QrCode.Frame>
+                                                <QrCode.Pattern />
+                                            </QrCode.Frame>
+                                        </QrCode.Root>
+                                    </Center>
+                                    <Text mt={2} wordBreak="break-all">
+                                        <Text as="span" color="#895023" fontWeight="bold">
+                                            Chave:{' '}
+                                        </Text>
+                                        {pixCode}
                                     </Text>
-                                    {pixCode}
-                                </Text>
 
-                                <Button
-                                    mt={6}
-                                    bg="#895023"
-                                    color="white"
-                                    variant="solid"
-                                    _hover={{ bgColor: "#6f3f1b" }}
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(pixCode);
-                                        toaster.create({
-                                            title: "Código copiado!",
-                                            description: "O código Pix foi copiado para a área de transferência.",
-                                            type: "success",
-                                            duration: 2000,
-                                            closable: true,
-                                        });
-                                    }}
-                                    size={"2xl"}
-                                >
-                                    Copiar código copia e cola
-                                </Button>
-                            </Box>
+                                    <Button
+                                        mt={6}
+                                        bg="#895023"
+                                        color="white"
+                                        variant="solid"
+                                        _hover={{ bgColor: "#6f3f1b" }}
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(pixCode);
+                                            toaster.create({
+                                                title: "Código copiado!",
+                                                description: "O código Pix foi copiado para a área de transferência.",
+                                                type: "success",
+                                                duration: 2000,
+                                                closable: true,
+                                            });
+                                        }}
+                                        size={"2xl"}
+                                    >
+                                        Copiar código copia e cola
+                                    </Button>
+                                </Box>
+                            )
                         )}
                     </Stack>
                 </Stack>

@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { toaster } from "../components/ui/toaster";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -261,42 +261,47 @@ export const useConfiguracoes = () => {
     }
 
 
-    async function gerarPixQrCode(valor: number) {
-        if (!session?.user.accessToken) {
-            return null;
-        }
-        const chavePix = await buscarChavePix();
-        const nomeCompleto = await buscarNomeCompleto();
-        const cidadeBanco = await buscarCidadeBanco();
+    const gerarPixQrCode = useCallback(
+        async (valor: number) => {
+            if (!session?.user.accessToken) return null;
 
-        if (!chavePix) {
-            toaster.create({
-                title: "Erro ao gerar QR Code",
-                description: "Não foi possível recuperar a chave PIX.",
-                type: "error",
-            });
-            return null;
-        }
+            const chavePix = await buscarChavePix();
+            const nomeCompleto = await buscarNomeCompleto();
+            const cidadeBanco = await buscarCidadeBanco();
 
-        try {
-            const res = await axios.post(`${APIURL}/pagamentos/gerar`, {
-                chave: chavePix,
-                nome: nomeCompleto.nome,
-                cidade: cidadeBanco.cidadeBanco,
-                valor: parseFloat(valor.toFixed(2)),
-            }, {
-                headers: {
-                    Authorization: `Bearer ${session.user.accessToken}`,
-                },
+            if (!chavePix) {
+                toaster.create({
+                    title: "Erro ao gerar QR Code",
+                    description: "Não foi possível recuperar a chave PIX.",
+                    type: "error",
+                });
+                return null;
             }
-            );
-            return res.data;
-        } catch (error) {
-            console.error("Erro ao gerar QR Code:", error);
-            alert("Erro ao gerar QR Code");
-            return null;
-        }
-    }
+
+            try {
+                const res = await axios.post(
+                    `${APIURL}/pagamentos/gerar`,
+                    {
+                        chave: chavePix,
+                        nome: nomeCompleto.nome,
+                        cidade: cidadeBanco.cidadeBanco,
+                        valor: parseFloat(valor.toFixed(2)),
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${session.user.accessToken}`,
+                        },
+                    }
+                );
+                return res.data;
+            } catch (error) {
+                console.error("Erro ao gerar QR Code:", error);
+                alert("Erro ao gerar QR Code");
+                return null;
+            }
+        },
+        [session, APIURL] // 🔁 Dependências
+    );
 
     return {
         buscarChavePix,
