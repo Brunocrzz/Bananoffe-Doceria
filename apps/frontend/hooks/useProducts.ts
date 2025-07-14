@@ -22,13 +22,35 @@ export const useProducts = () => {
       setTortas(response.data.Tortas);
 
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+
+      let message = "Erro ao buscar produtos. Tente novamente mais tarde.";
+      let type = "error";
+
+      if (error.code === "ECONNABORTED") {
+        message = "Servidor demorou para responder. Pode estar iniciando.";
+      } else if (error.response) {
+        if (error.response.status === 503) {
+          message = "Servidor está iniciando, tente novamente em alguns momentos.";
+          type = "info";
+        } else if (error.response.status >= 500) {
+          message = "Erro no servidor. Por favor, tente mais tarde.";
+        } else {
+          message = `Erro ${error.response.status}: ${error.response.statusText}`;
+        }
+      } else if (error.request) {
+        message = "Servidor sem resposta. Pode estar dormindo ou offline.";
+      } else {
+        message = "Erro inesperado. Verifique sua conexão e tente novamente.";
+      }
+
       toaster.create({
         title: "Erro ao buscar produtos",
-        description: "Tente novamente mais tarde.",
-        type: "error",
+        description: message,
+        type: type,
       });
+
       return [];
     } finally {
       setIsLoading(false);
@@ -67,7 +89,7 @@ export const useProducts = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [session,getProducts]);
+  }, [session, getProducts]);
 
   const updateProduct = useCallback(async (id: string, data: FormData) => {
     try {
