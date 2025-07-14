@@ -21,6 +21,7 @@ import { Pedido } from "../../types/Pedido.type";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { FaFileCircleCheck } from "react-icons/fa6";
+import { useUsers } from "@/hooks/useUsers";
 
 function AdminPedido() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -51,7 +52,7 @@ function AdminPedido() {
     };
 
     fetchPedidos();
-  }, [session, router,listarTodosPedidos]);
+  }, [session, router, listarTodosPedidos]);
 
   const toggleExpand = (id: string) => {
     setExpandedRow((prev) => (prev === id ? null : id));
@@ -131,6 +132,9 @@ function AdminPedido() {
                     Usuário
                   </Table.ColumnHeader>
                   <Table.ColumnHeader textAlign="center" p={2}>
+                    Telefone
+                  </Table.ColumnHeader>
+                  <Table.ColumnHeader textAlign="center" p={2}>
                     Total
                   </Table.ColumnHeader>
                   <Table.ColumnHeader textAlign="center" p={2}>
@@ -152,6 +156,9 @@ function AdminPedido() {
                       </Table.Cell>
                       <Table.Cell {...cellStyle} onClick={() => toggleExpand(pedido._id)}>
                         {pedido.usuarioId?.nome ?? "—"}
+                      </Table.Cell>
+                      <Table.Cell {...cellStyle} onClick={() => toggleExpand(pedido._id)}>
+                        {pedido.usuarioId?.telefone ?? "—"}
                       </Table.Cell>
                       <Table.Cell {...cellStyle} onClick={() => toggleExpand(pedido._id)}>
                         R$ {pedido.valorTotal.toFixed(2)}

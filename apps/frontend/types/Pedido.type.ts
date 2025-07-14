@@ -2,6 +2,7 @@ export interface UsuarioResumo {
   _id: string;
   nome: string;
   email: string;
+  telefone: string;
 }
 
 export interface PedidoItem {
