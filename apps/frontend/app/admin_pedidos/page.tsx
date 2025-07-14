@@ -21,7 +21,6 @@ import { Pedido } from "../../types/Pedido.type";
 import { useSession } from "next-auth/react";
 import React from "react";
 import { FaFileCircleCheck } from "react-icons/fa6";
-import { useUsers } from "@/hooks/useUsers";
 
 function AdminPedido() {
   const [searchTerm, setSearchTerm] = useState("");
