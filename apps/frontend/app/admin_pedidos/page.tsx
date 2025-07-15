@@ -49,6 +49,11 @@ function AdminPedido() {
       const data = await listarTodosPedidos();
       setPedidos(data);
     };
+    
+    if (session.user?.role !== "admin") {
+      router.push("/");
+      return;
+    }
 
     fetchPedidos();
   }, [session, router, listarTodosPedidos]);

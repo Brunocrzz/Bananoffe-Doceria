@@ -21,6 +21,8 @@ import { useForm } from "react-hook-form";
 import { ProdutoDialog } from "../../components/ProdutoDialog";
 import Link from "next/link";
 import MenuBar from "../../components/MenuBar";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export interface FormValues {
   _id: string;
@@ -56,6 +58,8 @@ function AdminCardapio() {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [imageTortaPreviewUrl, setTortaImagePreviewUrl] = useState<string | null>(null);
   const [imageFatiaPreviewUrl, setFatiaImagePreviewUrl] = useState<string | null>(null);
+  const { data: session } = useSession();
+  const router = useRouter();
 
   const isMobile = useBreakpointValue({ base: true, md: false });
   const imageSize = "50px";
@@ -79,8 +83,22 @@ function AdminCardapio() {
   const formEdit = useForm<FormValues>();
 
   useEffect(() => {
+    if (session === undefined) {
+      return;
+    }
+
+    if (session === null) {
+      router.push("/login");
+      return;
+    }
+
+    if (session.user?.role !== "admin") {
+      router.push("/");
+      return;
+    }
+
     getProducts();
-  }, [getProducts]);
+  }, [getProducts, session, router]);
 
   useEffect(() => {
     if (selectedProduct) {

@@ -49,6 +49,11 @@ function AdminConfig() {
             return;
         }
 
+        if (session.user?.role !== "admin") {
+            router.push("/");
+            return;
+        }
+
         const fetchChavePix = async () => {
             try {
                 const chave = await buscarChavePix();
